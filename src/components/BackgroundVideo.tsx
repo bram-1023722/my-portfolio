@@ -12,7 +12,7 @@ export default function BackgroundVideo() {
         let rafId: number;
 
         function handleTimeUpdate() {
-            if (!video.duration || finished) return;
+            if (!video || !video.duration || finished) return;
 
             const remaining = video.duration - video.currentTime;
             // Start slowing 1.3s before end
@@ -27,7 +27,7 @@ export default function BackgroundVideo() {
             const remaining = video.duration - video.currentTime;
 
             // Calculate new playback rate (goes from 1 to 0)
-            let rate = Math.max(remaining / 1.3, 0.08); // don't go too slow
+            const rate = Math.max(remaining / 1.3, 0.08); // don't go too slow
             video.playbackRate = rate;
 
             if (remaining > 0.05) {

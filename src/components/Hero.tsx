@@ -3,19 +3,6 @@ import { motion } from "framer-motion";
 const firstLine = "PROJECTS MADE, DISPLAYED AND PUBLISHED";
 const secondLine = "BY BRAM SMIDT";
 
-const popUpAnimation = {
-    hidden: { opacity: 0, y: 40 },
-    visible: (i: number) => ({
-        opacity: 1,
-        y: 0,
-        transition: {
-            delay: i * 0.2,
-            duration: 0.6,
-            ease: [0.7, 0, 0.84, 0]
-        }
-    })
-};
-
 export default function Hero() {
     return (
         <div className="w-full flex flex-col items-center justify-start pt-6">
@@ -25,10 +12,13 @@ export default function Hero() {
                         <motion.span
                             key={`first-${idx}`}
                             className="text-7xl font-bold text-white uppercase tracking-tight -mb-2 mr-4 inline-block"
-                            variants={popUpAnimation}
-                            initial="hidden"
-                            animate="visible"
-                            custom={idx}
+                            initial={{ opacity: 0, y: 40 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{
+                                delay: idx * 0.2,
+                                duration: 0.6,
+                                ease: [0.7, 0, 0.84, 0] as [number, number, number, number],
+                            }}
                         >
                             {word}
                         </motion.span>
@@ -41,10 +31,13 @@ export default function Hero() {
                         <motion.span
                             key={`second-${idx}`}
                             className="text-7xl font-bold uppercase tracking-tight -mb-2 mr-4 inline-block text-white"
-                            variants={popUpAnimation}
-                            initial="hidden"
-                            animate="visible"
-                            custom={firstLine.split(" ").length + idx}
+                            initial={{ opacity: 0, y: 40 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{
+                                delay: (firstLine.split(" ").length + idx) * 0.2,
+                                duration: 0.6,
+                                ease: [0.7, 0, 0.84, 0] as [number, number, number, number],
+                            }}
                             style={
                                 ["BRAM", "SMIDT"].includes(word)
                                     ? {
