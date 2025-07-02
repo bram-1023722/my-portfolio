@@ -1,14 +1,17 @@
+import { useState } from "react";
 import Hero from "@/components/Hero";
+import Navbar from "@/components/Navbar";
 
 export default function Home() {
+    const [showNav, setShowNav] = useState(false);
+
     return (
         <>
-            <Hero />
-            {/* Spacer div to allow content to scroll over the hero */}
+            <Navbar visible={showNav} />
+            <Hero onTextFade={(opacity) => setShowNav(opacity < 1)} />
             <div style={{ height: "100vh" }} />
-
             <main className="relative z-10 bg-white">
-                {/* About Me Section */}
+                {/* About Me */}
                 <section id="about" className="min-h-screen flex flex-col items-center justify-center px-8 py-24">
                     <h2 className="text-4xl font-bold mb-6">About Me</h2>
                     <p className="max-w-2xl text-lg text-gray-700 text-center">
@@ -16,8 +19,7 @@ export default function Home() {
                         (Add a longer story, your skills, and your personality here!)
                     </p>
                 </section>
-
-                {/* My Work Section */}
+                {/* My Work */}
                 <section id="work" className="min-h-screen flex flex-col items-center justify-center px-8 py-24 bg-gray-100">
                     <h2 className="text-4xl font-bold mb-6">My Work</h2>
                     <p className="max-w-2xl text-lg text-gray-700 text-center">
@@ -25,8 +27,7 @@ export default function Home() {
                         (Showcase projects, links, images, or cards here!)
                     </p>
                 </section>
-
-                {/* Contact Section */}
+                {/* Contact */}
                 <section id="contact" className="min-h-screen flex flex-col items-center justify-center px-8 py-24">
                     <h2 className="text-4xl font-bold mb-6">Contact</h2>
                     <p className="max-w-2xl text-lg text-gray-700 text-center">

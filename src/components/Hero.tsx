@@ -4,37 +4,39 @@ import { motion } from "framer-motion";
 const firstLine = "PROJECTS MADE, DISPLAYED AND PUBLISHED";
 const secondLine = "BY BRAM SMIDT";
 
-export default function Hero() {
+export default function Hero({ onTextFade }: { onTextFade?: (opacity: number) => void }) {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [finished, setFinished] = useState(false);
 
+    // Scroll fade logic
     const [scrollY, setScrollY] = useState(0);
     const [heroHeight, setHeroHeight] = useState(800);
+    useEffect(() => {
+        setHeroHeight(window.innerHeight);
+    }, []);
     useEffect(() => {
         const handleScroll = () => setScrollY(window.scrollY);
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    useEffect(() => {
-        setHeroHeight(window.innerHeight);
-    }, []);
-
-    const FADE_START = heroHeight * 0.6; // Start fading after 60% of hero scrolled
-    const FADE_DISTANCE = 180; // Fade out over 180px
+    // Fade starts after 60% of hero, fades over next 180px
+    const FADE_START = heroHeight * 0.6;
+    const FADE_DISTANCE = 180;
     const fadeProgress = (scrollY - FADE_START) / FADE_DISTANCE;
-    const textOpacity = scrollY < FADE_START
-        ? 1
-        : Math.max(0, 1 - fadeProgress);
+    const textOpacity = scrollY < FADE_START ? 1 : Math.max(0, 1 - fadeProgress);
 
-    // Background video slowdown logic (from your original)
+    // Inform parent when textOpacity changes
+    useEffect(() => {
+        if (onTextFade) onTextFade(textOpacity);
+    }, [textOpacity, onTextFade]);
+
+    // Video slowdown logic
     useEffect(() => {
         const video = videoRef.current;
         if (!video) return;
-
         let slowing = false;
         let rafId: number;
-
         function handleTimeUpdate() {
             if (!video || !video.duration || finished) return;
             const remaining = video.duration - video.currentTime;
@@ -43,7 +45,6 @@ export default function Hero() {
                 slowDown();
             }
         }
-
         function slowDown() {
             if (!video) return;
             const remaining = video.duration - video.currentTime;
@@ -56,7 +57,6 @@ export default function Hero() {
                 video.playbackRate = 1;
             }
         }
-
         video.addEventListener("timeupdate", handleTimeUpdate);
         return () => {
             video.removeEventListener("timeupdate", handleTimeUpdate);
@@ -66,21 +66,16 @@ export default function Hero() {
     }, [finished]);
 
     return (
-        <div
-            className="fixed inset-0 -z-10 overflow-hidden bg-center bg-cover w-full h-full"
-            style={{ backgroundImage: "url('/background.jpg')" }}
-        >
+        <div className="fixed inset-0 -z-10 overflow-hidden bg-center bg-cover w-full h-full" style={{ backgroundImage: "url('/background.jpg')" }}>
             <video
                 ref={videoRef}
                 src="/background.mp4"
                 autoPlay
                 muted
                 playsInline
-                className={`w-full h-full object-cover transition-opacity duration-[3000ms] ${
-                    finished ? "opacity-0" : "opacity-100"
-                }`}
+                className={`w-full h-full object-cover transition-opacity duration-[3000ms] ${finished ? "opacity-0" : "opacity-100"}`}
             />
-            {/* Hero text overlays everything, unchanged from your original */}
+            {/* HERO TEXT */}
             <div
                 className="absolute w-full flex flex-col items-center justify-start pt-6 top-0 left-0 h-full pointer-events-none"
                 style={{
@@ -88,6 +83,7 @@ export default function Hero() {
                     transition: "opacity 0.2s",
                 }}
             >
+                {/* First Line */}
                 <div className="flex justify-center">
                     <div className="text-center leading-[1.1]">
                         {firstLine.split(" ").map((word, idx) => (
@@ -107,6 +103,7 @@ export default function Hero() {
                         ))}
                     </div>
                 </div>
+                {/* Second Line */}
                 <div className="flex justify-center mt-4">
                     <div className="text-center leading-[1.1]">
                         {secondLine.split(" ").map((word, idx) => (
