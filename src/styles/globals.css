@@ -42,3 +42,7 @@ body {
           0px 1px 1px #ffff00,
           0px -1px 1px #00ff00;
 }
+
+.aboutme-content, .mywork-content, .contact-content {
+  font-family: 'Montserrat', 'Inter', 'Helvetica Neue', Arial, sans-serif;
+}

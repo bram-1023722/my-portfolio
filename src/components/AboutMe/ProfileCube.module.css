@@ -1,0 +1,41 @@
+.scene {
+    width: 160px;  /* Adjust size here */
+    height: 160px;
+    perspective: 900px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cube {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 1s cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+.face {
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    backface-visibility: hidden;
+    overflow: hidden;
+    box-shadow: 0 8px 32px 0 rgba(0,0,0,0.12), 0 2px 4px 0 rgba(0,0,0,0.06);
+    background: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Position each face */
+.front  { transform: rotateY(  0deg) translateZ(80px); }
+.right  { transform: rotateY( 90deg) translateZ(80px); }
+.back   { transform: rotateY(180deg) translateZ(80px); }
+.left   { transform: rotateY(-90deg) translateZ(80px); }
